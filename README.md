@@ -1,2 +1,7 @@
 # python-music-player
-Hi! It's my music player with Tkinter and pygame///
+Использованые библиотеки: 
+1) Визуальный интерфейс - Tkinter (ttkthemes и т.д) 
+2) Воспроизведение музыки - pygame, mutagen
+3) Отслеживание времени (плей\пауза) и счет времени и длительности песни - time
+4) Остановка процесса (т.е воспроизведения песни) - threating
+4) Работа с файлами (выбор и открытие) - os, filedialog (из библиотеки Tkinter) 
