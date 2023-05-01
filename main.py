@@ -60,7 +60,7 @@ subMenu.add_command(label="Exit", command=root.destroy)
 
 
 def about_us():
-    tkinter.messagebox.showinfo('About Melody', 'Cделано с  душой от Fr1st')
+    tkinter.messagebox.showinfo('About Melody', 'This is a music player build using Python Tkinter by @attreyabhatt')
 
 
 subMenu = Menu(menubar, tearoff=0)
@@ -129,39 +129,38 @@ def show_details(play_song):
     t1 = threading.Thread(target=start_count, args=(total_length,))
     t1.start()
 
-paused = False
 
-def start_count(t, current_pos=0):
+def start_count(t):
     global paused
+    
     # mixer.music.get_busy(): - Returns FALSE when we press the stop button (music stop playing)
     # Continue - Ignores all of the statements below it. We check if music is paused or not.
-    current_time = current_pos
-    while current_time <= t and mixer.music.get_busy():
-        if paused:
-            continue
-        else:
-            mins, secs = divmod(current_time, 60)
-            mins = round(mins)
-            secs = round(secs)
-            timeformat = '{:02d}:{:02d}'.format(mins, secs)
-            currenttimelabel['text'] = "Current Time" + ' - ' + timeformat
-            time.sleep(1)
-            current_time += 1
-
-def stop_music():
-    mixer.music.stop()
-    statusbar['text'] = "Music Stopped"
+    current_time = 0
+    while True:
+        while current_time <= t and mixer.music.get_busy():
+            if paused:
+                continue
+                
+            else:
+                mins, secs = divmod(current_time, 60)
+                mins = round(mins)
+                secs = round(secs)
+                timeformat = '{:02d}:{:02d}'.format(mins, secs)
+                currenttimelabel['text'] = "Current Time" + ' - ' + timeformat
+                time.sleep(1)
+                print(timeformat)
+                current_time += 1
 
 
 def play_music():
     global paused
 
     if paused:
+        
+        
         mixer.music.unpause()
         statusbar['text'] = "Music Resumed"
-        paused = False
-        # Start counting from the current position of the music
-        start_count(mixer.music.get_pos() / 1000)
+        paused = FALSE
     else:
         try:
             stop_music()
@@ -177,10 +176,12 @@ def play_music():
             tkinter.messagebox.showerror('File not found', 'Melody could not find the file. Please check again.')
 
 
+def stop_music():
+    mixer.music.stop()
+    statusbar['text'] = "Music Stopped"
 
 
-
-
+paused = FALSE
 
 
 def pause_music():
@@ -191,10 +192,8 @@ def pause_music():
 
 
 def rewind_music():
-    
     play_music()
     
-
     statusbar['text'] = "Music Rewinded"
 
 
