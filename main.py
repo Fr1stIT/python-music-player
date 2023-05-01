@@ -12,31 +12,30 @@ from mutagen.mp3 import MP3
 from pygame import mixer
 
 root = tk.ThemedTk()
-root.get_themes()                 # Returns a list of all themes that can be set
-root.set_theme("radiance")         # Sets an available theme
+root.get_themes()                 # Получение всех тем от ttkthemes
+root.set_theme("plastik")         # Установка темы
+root.configure(bg='#242424')
 
-# Fonts - Arial (corresponds to Helvetica), Courier New (Courier), Comic Sans MS, Fixedsys,
-# MS Sans Serif, MS Serif, Symbol, System, Times New Roman (Times), and Verdana
-#
-# Styles - normal, bold, roman, italic, underline, and overstrike.
-
+                                                            #GROOVE, #RIDGE         #Sans, #Papyrus
 statusbar = ttk.Label(root, text="Welcome to Melody", relief=SUNKEN, anchor=W, font='Times 10 italic')
 statusbar.pack(side=BOTTOM, fill=X)
 
-# Create the menubar
+
+
+# Создание меню (сверху)
 menubar = Menu(root)
 root.config(menu=menubar)
 
-# Create the submenu
+# Создание подменю (сверху, внутри меню)
 
 subMenu = Menu(menubar, tearoff=0)
 
 playlist = []
 
 
-# playlist - contains the full path + filename
-# playlistbox - contains just the filename
-# Fullpath + filename is required to play the music inside play_music load function
+# playlist - содержит полный путь и имя файла
+# playlistbox - содежрит только имя файла
+# Fullpath + filename требуются для воспроизведения музыки внутри функции загрузки play_music
 
 def browse_file():
     global filename_path
@@ -60,26 +59,26 @@ subMenu.add_command(label="Exit", command=root.destroy)
 
 
 def about_us():
-    tkinter.messagebox.showinfo('About Melody', 'This is a music player build using Python Tkinter by @attreyabhatt')
+    tkinter.messagebox.showinfo('Об Авторе', 'Сделано слюбовью от @Fr1stIT')
 
 
 subMenu = Menu(menubar, tearoff=0)
 menubar.add_cascade(label="Help", menu=subMenu)
 subMenu.add_command(label="About Us", command=about_us)
 
-mixer.init()  # initializing the mixer
+mixer.init()  # Запуск микшера
 
 root.title("Melody")
 root.iconbitmap(r'images/melody.ico')
 
-# Root Window - StatusBar, LeftFrame, RightFrame
-# LeftFrame - The listbox (playlist)
+# Во всем окне есть: Статусбар, правая часть, левая часть
+# Левая часть содержит в себе вывод списка (плейлиста)
 # RightFrame - TopFrame,MiddleFrame and the BottomFrame
 
-leftframe = Frame(root)
+leftframe = Frame(root, bg='#242424')
 leftframe.pack(side=LEFT, padx=30, pady=30)
 
-playlistbox = Listbox(leftframe)
+playlistbox = Listbox(leftframe, bg='#242424', fg='white')
 playlistbox.pack()
 
 addBtn = ttk.Button(leftframe, text="+ Add", command=browse_file)
@@ -93,19 +92,19 @@ def del_song():
     playlist.pop(selected_song)
 
 
-delBtn = ttk.Button(leftframe, text="- Del", command=del_song)
+delBtn = ttk.Button(leftframe, text="- Del", command=del_song, )
 delBtn.pack(side=LEFT)
 
-rightframe = Frame(root)
+rightframe = Frame(root, bg='#242424', )
 rightframe.pack(pady=30)
 
-topframe = Frame(rightframe)
+topframe = Frame(rightframe,  bg='#242424')
 topframe.pack()
 
-lengthlabel = ttk.Label(topframe, text='Total Length : --:--')
+lengthlabel = ttk.Label(topframe, text='Total Length : --:--', )
 lengthlabel.pack(pady=5)
 
-currenttimelabel = ttk.Label(topframe, text='Current Time : --:--', relief=GROOVE)
+currenttimelabel = ttk.Label(topframe, text='Current Time : --:--', relief=GROOVE,  )
 currenttimelabel.pack()
 
 
@@ -208,23 +207,25 @@ muted = FALSE
 
 def mute_music():
     global muted
-    if muted:  # Unmute the music
+    if muted:  # Размутить музыку
         mixer.music.set_volume(0.7)
         volumeBtn.configure(image=volumePhoto)
         scale.set(70)
         muted = FALSE
-    else:  # mute the music
+    else:  # Замутить
         mixer.music.set_volume(0)
         volumeBtn.configure(image=mutePhoto)
         scale.set(0)
         muted = TRUE
 
 
-middleframe = Frame(rightframe)
+middleframe = Frame(rightframe,bg='#242424')
 middleframe.pack(pady=30, padx=30)
 
 playPhoto = PhotoImage(file='images/play.png')
-playBtn = ttk.Button(middleframe, image=playPhoto, command=play_music)
+playBtn = ttk.Button(middleframe, image=playPhoto, command=play_music,)
+playBtn.configure(style='DarkButton.TButton')
+
 playBtn.grid(row=0, column=0, padx=10)
 
 stopPhoto = PhotoImage(file='images/stop.png')
@@ -235,7 +236,7 @@ pausePhoto = PhotoImage(file='images/pause.png')
 pauseBtn = ttk.Button(middleframe, image=pausePhoto, command=pause_music)
 pauseBtn.grid(row=0, column=2, padx=10)
 
-# Bottom Frame for volume, rewind, mute etc.
+# Размещение кнопок относительно колонок и краев
 
 bottomframe = Frame(rightframe)
 bottomframe.pack()
@@ -249,8 +250,9 @@ volumePhoto = PhotoImage(file='images/volume.png')
 volumeBtn = ttk.Button(bottomframe, image=volumePhoto, command=mute_music)
 volumeBtn.grid(row=0, column=1)
 
-scale = ttk.Scale(bottomframe, from_=0, to=100, orient=HORIZONTAL, command=set_vol)
-scale.set(70)  # implement the default value of scale when music player starts
+scale = ttk.Scale(bottomframe, from_=0, to=100, orient=HORIZONTAL, command=set_vol, )
+
+scale.set(70)  # установка значения по умолчанию для ползунка
 mixer.music.set_volume(0.7)
 scale.grid(row=0, column=2, pady=15, padx=30)
 
