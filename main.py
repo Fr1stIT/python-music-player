@@ -131,9 +131,6 @@ def show_details(play_song):
 
 def start_count(t):
     global paused
-    
-    # mixer.music.get_busy(): - Returns FALSE when we press the stop button (music stop playing)
-    # Continue - Ignores all of the statements below it. We check if music is paused or not.
     current_time = 0
     while True:
         while current_time <= t and mixer.music.get_busy():
